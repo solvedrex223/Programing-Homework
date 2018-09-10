@@ -38,13 +38,26 @@ public class MyLinkedList <E>{
 		}
 	}
 
-	public E first () {
+	public E first () throws NoSuchElementException {
+		try {
 		return this.head.getData();
+		}
+		catch (NullPointerException ex) {
+			throw new NoSuchElementException("No se puede regresar el primer elemento de una lista vacia");
+		}
 	}
 
-	public E last ()
-	{
-		return this.tail.getData();
+	public E last () throws NoSuchElementException {
+		try {
+			return this.tail.getData();
+			}
+			catch (NullPointerException ex) {
+				throw new NoSuchElementException("No se puede regresar el ultimo elemento de una lista vacia");
+			}
+	}
+	
+	public int size () {
+		return this.size;
 	}
 
 	public boolean isEmpty() {
@@ -104,7 +117,6 @@ public class MyLinkedList <E>{
 			this.tail= null;
 		}
 		this.size--;
-		System.out.println(tmp);
 		return tmp;
 		}
 		catch (NullPointerException ex) {
