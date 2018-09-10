@@ -1,3 +1,8 @@
+// Javeier Emiliano Escobedo Padilla
+// A01350928
+// Grupo 1
+// Estructura de Datos
+// 10/09/2018
 package src;
 
 import java.util.NoSuchElementException;
