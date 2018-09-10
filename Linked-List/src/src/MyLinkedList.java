@@ -70,22 +70,26 @@ public class MyLinkedList <E>{
 
 	//Tarea
 	public void insertAt (E data, int pos) throws IndexOutOfBoundsException { //Si pos < 0 o mayor a size
-		if (pos < 0 || pos > size) {
+		if (pos < 0 || pos >= size) {
 			throw new IndexOutOfBoundsException ("El indice no esta dentro del rango de la lista");
 		}
+		else if (pos == 0){
+			this.insertAtFirst(data);
+		}
+		else if (pos == size-1){
+			this.addLast(data);
+		}
 		else {
-			Node <E> next = head;
-			for (int i = 0; i < pos; i++) {
-				if (i != pos -1) {
-					next = next.next();
-				}
-				else {
-					Node <E> nvo = new Node <> (data,next.next());
-					next.setNext(nvo);
-				}
+			Node <E> pre = head;
+			for (int i = 0; i < pos-1; i++) {
+				pre = pre.next();
 			}
+			Node <E> tmp = new Node <> (data,pre.next());
+			pre.setNext(tmp);
+			size++;		
 		}
 	}
+	
 	
 	public E removeFirst () throws NoSuchElementException {
 		try {
@@ -99,7 +103,7 @@ public class MyLinkedList <E>{
 		return tmp;
 		}
 		catch (NullPointerException ex) {
-			throw new NoSuchElementException ("You can´t remove the first element of an empty list");
+			throw new NoSuchElementException ("You canÂ´t remove the first element of an empty list");
 		}
 	}
 	
@@ -120,7 +124,7 @@ public class MyLinkedList <E>{
 			return tmp;
 		}
 		catch (NullPointerException ex) {
-			throw new NoSuchElementException("You can´t remove the last element of an empty list");
+			throw new NoSuchElementException("You canÂ´t remove the last element of an empty list");
 		}
 	}
 	
@@ -130,19 +134,89 @@ public class MyLinkedList <E>{
 		for (int i = 0; i < size; i++) {
 			if (i == 0) {
 				tmp = tmp + current.getData();
+				current = current.next();
 			}
-			tmp = tmp + "," + current.getData();
-			current = current.next();
+			else {
+				tmp = tmp + "," + current.getData();
+				current = current.next();
+			}
 		}
 		return tmp;
 	}
 	
 	public E removeAt(int x) {
-		
+		if (x < 0 || x >= size) {
+			throw new IndexOutOfBoundsException ("El indice no esta dentro del rango de la lista");
+		}
+		else {
+			Node <E> tmp = this.head;
+			if (x == 0){
+				tmp = tmp.next();
+				E data = head.getData();
+				this.head.setNext(null);
+				this.head = tmp;
+				size--;	
+				return data;
+			}
+			else if (x == size-1){
+				for (int i = 0;i < x - 1; i++){
+					tmp = tmp.next();
+				}
+				E data = tail.getData();
+				tail.setNext(null);
+				tail = tmp;
+				size--;	
+				return data;
+			}
+			else {
+				for (int i = 0;i < x - 1; i++){
+					tmp = tmp.next();
+				}
+				Node <E> tmp2 = tmp.next();
+				tmp.setNext(tmp2.next());
+				tmp2.setNext(null);
+				size--;	
+				return tmp2.getData();
+			}
+		}
 	}
 	public E getAt (int x) {
-		
+		if (x < 0 || x >= size) {
+			throw new IndexOutOfBoundsException ("El indice no esta dentro del rango de la lista");
+		}
+		else if (x == 0){
+			return this.head.getData();
+		}
+		else if (x == size-1){
+			return this.tail.getData();
+		}
+		else {
+			Node <E> tmp = this.head;
+			for (int i = 0;i <= x - 1; i++){
+				tmp = tmp.next();
+			}
+			return tmp.getData();
+		}
 	}
+	public void setAt (E data, int x) {
+		if (x < 0 || x >= size) {
+			throw new IndexOutOfBoundsException ("El indice no esta dentro del rango de la lista");
+		}
+		else if (x == 0){
+			this.head.setData(data);
+		}
+		else if (x == size-1){
+			this.tail.setData(data);
+		}
+		else {
+			Node <E> tmp = this.head;
+			for (int i = 0;i <= x - 1; i++){
+				tmp = tmp.next();
+			}
+			tmp.setData(data);
+		}
+	}
+
 
 	public static void main(String[] args) {
 		MyLinkedList <Integer> lista = new MyLinkedList<>();
@@ -150,8 +224,10 @@ public class MyLinkedList <E>{
 			lista.insertAtFirst(i*5);
 		}
 		System.out.println(lista.toString());
-		lista.removeFirst();
-		lista.removeLast();
+		System.out.println(lista.removeAt(3));
+		System.out.println(lista.getAt(1));
+		lista.setAt(9,1);
+		System.out.println(lista.getAt(1));
 		System.out.println(lista.toString());
 	}
 }
